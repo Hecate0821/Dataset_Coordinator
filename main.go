@@ -131,13 +131,27 @@ func withdrawTask(c *gin.Context) {
 	tasksLock.Lock()
 	defer tasksLock.Unlock()
 
+	var request struct {
+		WorkerName string `json:"worker_name"`
+	}
+
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
 	for i, task := range tasks {
-		if task.Status == PROCESSING && task.WorkerName == c.ClientIP() {
+		if task.Status == PROCESSING && task.WorkerName == request.WorkerName {
 			task.Status = UNFINISHED
 			task.FinishedTime = ""
 			task.AssignedTime = ""
 			task.WorkerName = ""
 			tasks[i] = task
+		}
+
+		if i == len(tasks)-1 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Task not found or not assigned to you"})
+			return
 		}
 	}
 
