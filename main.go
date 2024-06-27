@@ -29,6 +29,8 @@ func main() {
 	// 更新任务状态
 	r.POST("/updateTask", updateTask)
 
+	r.POST("/withdrawTask", withdrawTask)
+
 	r.Run(":80")
 }
 
@@ -85,6 +87,22 @@ func updateTask(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusNotFound, gin.H{"message": "Task not found or not assigned to you"})
+}
+
+func withdrawTask(c *gin.Context) {
+	tasksLock.Lock()
+	defer tasksLock.Unlock()
+
+	for _, task := range tasks {
+		if task.Status == 1 && task.WorkerName == c.ClientIP() {
+			task.Status = 0
+
+		}
+	}
+
+	saveTasks()
+	c.JSON(http.StatusOK, gin.H{"message": "Task withdrawn"})
+	return
 }
 
 func saveTasks() {
