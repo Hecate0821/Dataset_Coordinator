@@ -139,6 +139,7 @@ func withdrawTask(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
+
 	jsonBytes, _ := json.Marshal(request)
 	logrus.Info("Request worker_name:" + string(jsonBytes))
 
