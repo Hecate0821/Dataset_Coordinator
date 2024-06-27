@@ -135,13 +135,13 @@ func withdrawTask(c *gin.Context) {
 		WorkerName string `json:"worker_name"`
 	}
 
-	jsonBytes, _ := json.Marshal(request)
-	logrus.Info("Request worker_name:" + string(jsonBytes))
-
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
+
+	jsonBytes, _ := json.Marshal(request)
+	logrus.Info("Request worker_name:" + string(jsonBytes))
 
 	for i, task := range tasks {
 		if task.Status == PROCESSING && task.WorkerName == request.WorkerName {
