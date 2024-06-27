@@ -28,6 +28,8 @@ const UNFINISHED int = 0
 
 const WarningExecutedCount int = 5
 
+const TaskResetInterval = 3 * time.Hour
+
 func main() {
 	// 初始化日志
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -36,6 +38,14 @@ func main() {
 
 	// 初始化任务列表
 	loadTasks()
+
+	// 设置定时任务
+	ticker := time.NewTicker(1 * time.Hour) // 每小时检查一次
+	go func() {
+		for range ticker.C {
+			resetOldTasks()
+		}
+	}()
 
 	r := gin.Default()
 
@@ -50,6 +60,25 @@ func main() {
 	if err != nil {
 		return
 	}
+}
+
+func resetOldTasks() {
+	tasksLock.Lock()
+	defer tasksLock.Unlock()
+
+	now := time.Now().In(time.FixedZone("CST", 8*3600))
+	for i, task := range tasks {
+		if task.Status == PROCESSING {
+			assignedTime, err := time.Parse("2006-01-02 15:04:05", task.AssignedTime)
+			if err == nil && now.Sub(assignedTime) > TaskResetInterval {
+				task.Status = UNFINISHED
+				task.AssignedTime = ""
+				task.WorkerName = ""
+				tasks[i] = task
+			}
+		}
+	}
+	saveTasks()
 }
 
 func loadTasks() {
