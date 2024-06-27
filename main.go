@@ -28,7 +28,7 @@ const UNFINISHED int = 0
 
 const WarningExecutedCount int = 5
 
-const TaskResetInterval = 3 * time.Hour
+const TaskResetInterval = 6 * time.Hour
 
 func main() {
 	// 初始化日志
