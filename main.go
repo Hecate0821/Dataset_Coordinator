@@ -1,17 +1,11 @@
 package main
 
 import (
-	"bytes"
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"io"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 	"time"
 )
@@ -36,49 +30,6 @@ const WarningExecutedCount int = 5
 
 const TaskResetInterval = 3 * time.Hour
 
-var secretKey = []byte("your_secret_key")
-
-func SignMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// 从请求头中获取签名
-		signHeader := c.GetHeader("Authorization")
-		if signHeader == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing authorization header"})
-			return
-		}
-
-		// 假设签名格式为 "Bearer <signature>"
-		parts := strings.Split(signHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header format"})
-			return
-		}
-
-		// 获取请求体
-		body, err := c.GetRawData()
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Failed to read request body"})
-			return
-		}
-
-		// 计算请求体的HMAC SHA256签名
-		mac := hmac.New(sha256.New, secretKey)
-		mac.Write(body)
-		expectedSign := mac.Sum(nil)
-		expectedSignHex := hex.EncodeToString(expectedSign)
-
-		// 比较计算出的签名和请求头中的签名
-		if parts[1] != expectedSignHex {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid signature"})
-			return
-		}
-
-		// 如果验签通过，继续处理请求
-		c.Request.Body = io.NopCloser(bytes.NewBuffer(body))
-		c.Next()
-	}
-}
-
 func main() {
 	// 初始化日志
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -98,12 +49,9 @@ func main() {
 
 	r := gin.Default()
 
-	secured := r.Group("/", SignMiddleware())
-	{
-		secured.POST("/getTask", logRequest(getTask))
-		secured.POST("/completeTask", logRequest(completeTask))
-		secured.POST("/withdrawTask", logRequest(withdrawTask))
-	}
+	r.POST("/getTask", logRequest(getTask))
+	r.POST("/completeTask", logRequest(completeTask))
+	r.POST("/withdrawTask", logRequest(withdrawTask))
 
 	err := r.Run(":80")
 	if err != nil {
