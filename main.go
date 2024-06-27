@@ -26,7 +26,7 @@ const FINISHED int = 2
 const PROCESSING int = 1
 const UNFINISHED int = 0
 
-const WARNING_EXECUTED_COUNT int = 5
+const WarningExecutedCount int = 5
 
 func main() {
 	// 初始化日志
@@ -42,11 +42,14 @@ func main() {
 	// 获取任务
 	r.POST("/getTask", logRequest(getTask))
 	// 更新任务状态
-	r.POST("/updateTask", logRequest(updateTask))
+	r.POST("/completeTask", logRequest(completeTask))
 
 	r.POST("/withdrawTask", logRequest(withdrawTask))
 
-	r.Run(":80")
+	err := r.Run(":80")
+	if err != nil {
+		return
+	}
 }
 
 func loadTasks() {
@@ -75,7 +78,7 @@ func getTask(c *gin.Context) {
 		return
 	}
 
-	if request.ExecuteCount > WARNING_EXECUTED_COUNT {
+	if request.ExecuteCount > WarningExecutedCount {
 		logrus.WithFields(logrus.Fields{
 			"worker_name":   request.WorkerName,
 			"execute_count": request.ExecuteCount,
@@ -97,7 +100,7 @@ func getTask(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "No tasks available"})
 }
 
-func updateTask(c *gin.Context) {
+func completeTask(c *gin.Context) {
 	tasksLock.Lock()
 	defer tasksLock.Unlock()
 

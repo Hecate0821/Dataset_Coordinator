@@ -1,12 +1,12 @@
 [
-  {"pattern":"CC-MAIN-2017-51", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-47", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-43", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-39", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-34", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-30", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-26", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-22", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-17", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""},
-  {"pattern":"CC-MAIN-2017-13", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":""}
+  {"pattern":"CC-MAIN-2017-51", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-47", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-43", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-39", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-34", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-30", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-26", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-22", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-17", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""},
+  {"pattern":"CC-MAIN-2017-13", "status":"0", "worker_name":"", "assigned_time":"", "finished_time":"", "ExecuteCount":""}
 ]
