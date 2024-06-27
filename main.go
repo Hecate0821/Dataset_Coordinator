@@ -72,6 +72,7 @@ func resetOldTasks() {
 				task.AssignedTime = ""
 				task.WorkerName = ""
 				tasks[i] = task
+				logrus.Info("Task: %s has been reset", task.Pattern)
 			}
 		}
 	}
