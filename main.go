@@ -140,6 +140,8 @@ func withdrawTask(c *gin.Context) {
 		return
 	}
 
+	logrus.Info("Request workname:" + request.WorkerName)
+
 	for i, task := range tasks {
 		if task.Status == PROCESSING && task.WorkerName == request.WorkerName {
 			task.Status = UNFINISHED
